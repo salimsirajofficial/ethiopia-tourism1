@@ -1,0 +1,37 @@
+/* Global overrides and custom animations */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    transition: direction 0.2s ease;
+  }
+  
+  /* RTL-aware floating language switcher: always stays on the visual right */
+  [dir="rtl"] .floating-lang-switcher {
+    right: auto;
+    left: 16px;
+  }
+}
+
+/* Amharic font support */
+@font-face {
+  font-family: 'NotoSansEthiopic';
+  src: local('Noto Sans Ethiopic');
+  unicode-range: U+1200-137F, U+1380-139F, U+2D80-2DDF, U+AB01-AB2F;
+}
+
+/* Apply Amharic font to Amharic text */
+:lang(am) {
+  font-family: 'NotoSansEthiopic', 'Noto Sans Ethiopic', sans-serif;
+}
+
+/* RTL body adjustments */
+[dir="rtl"] body {
+  text-align: right;
+}
+
+/* Keep the floating lang switcher always on right even in RTL */
+.lang-switcher-fixed {
+  position: fixed !important;
+  right: 16px !important;
+  left: auto !important;
+}

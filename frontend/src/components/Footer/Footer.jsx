@@ -1,0 +1,212 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
+
+const Facebook = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+  </svg>
+);
+
+const Twitter = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+  </svg>
+);
+
+const Instagram = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+  </svg>
+);
+
+const Youtube = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.11 1 12 1 12s0 3.89.46 5.58a2.78 2.78 0 0 0 1.94 2c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.89 23 12 23 12s0-3.89-.46-5.58z"/><polyline points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+  </svg>
+);
+
+const EthiopiaMap = (props) => (
+  <svg viewBox="0 0 1024 1024" fill="currentColor" {...props}>
+    <g transform="translate(0,1024) scale(0.1,-0.1)">
+      <path d="M3141 9168 c-10 -24 -55 -134 -101 -244 -71 -172 -86 -200 -98 -188 -7 8 -21 14 -31 14 -11 0 -25 15 -36 41 -23 49 -64 73 -111 65 -38 -8 -84 -57 -84 -91 0 -33 -32 -41 -77 -20 -20 10 -64 20 -98 23 -90 7 -128 -16 -205 -123 l-61 -85 17 -28 c16 -29 15 -34 -86 -352 -110 -347 -108 -338 -84 -477 8 -43 -15 -52 -57 -22 -30 21 -35 21 -98 10 -157 -29 -161 -31 -167 -61 -3 -15 -48 -80 -100 -145 -96 -120 -102 -133 -135 -270 -11 -44 -24 -61 -102 -137 -82 -79 -89 -89 -82 -115 4 -15 9 -67 12 -114 l5 -86 -41 -32 c-51 -40 -53 -73 -12 -150 l28 -54 -34 -58 c-28 -48 -32 -65 -27 -96 9 -61 -16 -107 -66 -122 -23 -7 -43 -11 -44 -9 -74 104 -99 128 -131 128 -33 0 -36 -4 -116 -136 -72 -121 -80 -139 -70 -160 6 -13 8 -37 5 -52 -4 -19 1 -43 15 -70 27 -53 19 -93 -25 -127 -34 -26 -34 -27 -34 -105 0 -77 -1 -81 -48 -157 l-49 -78 12 -350 c7 -192 10 -353 8 -357 -2 -5 -14 -8 -27 -8 -18 0 -25 -10 -40 -55 -20 -58 -34 -68 -120 -85 -31 -6 -45 -4 -65 10 -14 10 -47 20 -72 24 -37 4 -52 1 -79 -18 -28 -19 -39 -21 -69 -13 -24 6 -50 6 -78 -2 l-41 -11 -7 -75 c-7 -74 -8 -76 -53 -116 -69 -60 -85 -92 -80 -161 6 -77 25 -98 92 -98 36 0 70 -9 114 -30 48 -23 68 -27 82 -20 28 15 36 13 73 -20 31 -27 36 -28 48 -14 17 21 65 11 99 -20 14 -13 37 -30 52 -37 41 -22 129 -144 148 -208 15 -50 21 -59 68 -86 28 -16 54 -39 58 -50 21 -74 50 -100 129 -119 44 -11 75 -44 75 -81 0 -44 25 -76 58 -73 31 2 71 -17 90 -44 7 -10 27 -25 44 -34 22 -11 29 -21 25 -35 -3 -11 5 -51 18 -88 12 -37 26 -88 30 -112 4 -25 22 -64 41 -90 27 -36 34 -56 34 -90 0 -30 14 -79 47 -156 46 -107 50 -113 95 -138 59 -32 61 -36 49 -81 -8 -28 -6 -43 6 -69 l16 -33 62 30 61 31 41 -26 c36 -23 45 -25 75 -15 31 9 40 7 75 -16 35 -23 41 -33 47 -73 5 -41 3 -50 -18 -72 -23 -25 -24 -29 -19 -146 5 -114 7 -122 35 -157 20 -26 27 -44 23 -58 -7 -23 28 -80 50 -80 8 0 21 -13 30 -29 17 -33 17 -33 385 -50 l185 -9 115 -55 c63 -31 144 -77 180 -104 36 -27 108 -78 160 -113 52 -34 170 -118 261 -186 l165 -124 109 -16 c82 -12 118 -13 149 -5 36 9 48 7 83 -10 29 -14 46 -17 64 -10 18 6 35 3 69 -14 38 -19 68 -23 200 -29 144 -7 157 -9 180 -31 18 -17 40 -24 80 -27 30 -3 63 -8 72 -12 14 -6 23 2 45 38 15 25 35 46 43 46 9 0 41 46 76 108 l61 107 238 123 c219 114 246 125 338 143 l99 19 22 -28 c52 -66 91 -103 149 -138 l62 -38 241 -4 241 -4 24 67 c27 78 57 105 117 105 21 0 144 9 273 20 210 18 237 22 269 44 24 16 39 36 48 65 21 72 103 141 308 263 159 94 199 113 289 139 l105 29 353 0 352 1 84 92 c107 117 1893 2208 1889 2211 -2 1 -138 -1 -303 -6 l-300 -8 -1065 326 -1066 327 -109 122 c-89 98 -123 128 -175 156 -58 30 -78 50 -183 179 -64 80 -138 174 -164 210 -25 36 -71 96 -101 134 -30 38 -69 101 -85 140 -16 39 -52 103 -78 143 -27 40 -49 77 -49 83 0 6 38 67 85 135 47 68 85 125 85 128 0 3 -25 9 -55 12 -42 6 -58 13 -70 31 -11 17 -25 24 -48 24 -17 0 -38 4 -46 9 -19 12 -70 -6 -102 -36 -24 -22 -36 -24 -138 -28 -75 -2 -120 -8 -134 -18 -37 -24 -87 -26 -151 -4 l-59 20 7 149 c4 93 3 163 -4 187 -8 30 -7 48 5 81 8 23 15 58 15 76 0 19 4 34 9 34 25 0 117 110 197 235 49 77 104 153 122 169 20 18 32 37 32 53 0 14 10 41 21 60 l22 35 -44 45 c-24 24 -61 54 -83 65 -21 11 -123 105 -226 208 -125 126 -215 207 -271 245 -111 75 -135 99 -169 165 -20 40 -38 60 -63 72 -23 11 -87 80 -194 210 l-159 193 -185 72 c-101 40 -194 71 -207 69 -19 -3 -28 6 -52 54 -27 53 -32 58 -54 52 -14 -4 -35 -23 -48 -42 -32 -47 -81 -53 -126 -15 -39 33 -142 75 -182 75 -28 0 -30 -2 -30 -40 0 -49 -20 -61 -62 -37 -22 13 -28 13 -28 3 0 -8 -11 -17 -25 -20 -14 -4 -31 -18 -37 -32 -6 -13 -16 -23 -22 -21 -12 4 -12 17 -2 57 4 17 0 36 -13 57 -28 45 -59 62 -103 56 -31 -4 -39 -10 -45 -34 -12 -42 -115 -119 -162 -119 -22 0 -58 -13 -95 -34 -52 -30 -62 -32 -92 -23 -20 6 -45 26 -61 46 -14 20 -39 50 -54 66 -15 17 -29 41 -31 55 -2 20 -9 26 -33 27 -56 5 -135 24 -135 33 0 13 -59 79 -82 91 -16 9 -21 4 -37 -33z"/>
+    </g>
+  </svg>
+);
+
+const Footer = () => {
+  const { t } = useTranslation();
+  const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    [t("footer.discover")]: [
+      { name: t("Destinations"), href: "/#destinations" },
+      { name: t("Tours"), href: "/#tours" },
+      { name: t("Culture"), href: "/#culture" },
+      { name: t("About"), href: "/#about" }
+    ],
+    [t("footer.support")]: [
+      { name: t("footer.help"), href: "#" },
+      { name: t("footer.advisory"), href: "#" },
+      { name: t("footer.terms"), href: "#" },
+      { name: t("footer.privacy"), href: "#" }
+    ],
+    [t("footer.account")]: [
+      { name: t("footer.clientLogin"), href: "/login" },
+      { name: t("footer.createAccount"), href: "/signup" },
+      { name: t("footer.myBookings"), href: "/dashboard" },
+      { name: t("footer.manageProfile"), href: "/dashboard" }
+    ]
+  };
+
+  const socialIcons = [
+    { Icon: Facebook, href: "#" },
+    { Icon: Twitter, href: "#" },
+    { Icon: Instagram, href: "#" },
+    { Icon: Youtube, href: "#" }
+  ];
+
+  return (
+    <footer className="bg-neutral-950 pt-16 pb-12 relative overflow-hidden border-t border-white/5">
+      {/* Background Decorative Patterns */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-600/5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/2"></div>
+
+      {/* Tibeb pattern watermark */}
+      <div className="absolute bottom-10 right-10 text-[10rem] font-black text-white/[0.02] pointer-events-none select-none leading-none rotate-12">
+        ቅርስ
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+        
+        {/* Simplified Newsletter Section */}
+        <div className="border-b border-white/5 pb-12 mb-12 flex flex-col lg:flex-row justify-between items-center gap-8 text-center lg:text-left">
+          <div className="max-w-xl">
+            <h3 className="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">
+              {t("footer.stayUpdated")}
+            </h3>
+            <p className="text-neutral-400 text-sm">
+              {t("footer.newsletter")}
+            </p>
+          </div>
+          
+          <div className="w-full lg:w-auto">
+            <div className="relative group max-w-sm mx-auto">
+              <input 
+                type="email" 
+                placeholder={t("footer.emailPlaceholder")}
+                className="w-full pl-6 pr-16 py-3.5 bg-neutral-900 border border-white/10 rounded-full text-white text-sm placeholder-neutral-500 focus:outline-none focus:border-amber-500 transition-all duration-300"
+              />
+              <button 
+                className="absolute right-1.5 top-1.5 p-2.5 bg-amber-500 hover:bg-amber-400 text-black rounded-full transition-all duration-300"
+                title="Subscribe"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Links Grid — 5 columns */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 mb-16">
+          
+          {/* Brand Info */}
+          <div className="col-span-2 md:col-span-1 lg:col-span-1">
+            <Link to="/" className="flex items-center gap-2.5 mb-6 group inline-flex">
+              <EthiopiaMap className="w-7 h-7 text-amber-500" />
+              <span className="text-xl font-black text-white tracking-tight">
+                Ethio<span className="text-amber-500">Discover</span>
+              </span>
+            </Link>
+            <p className="text-neutral-400 text-xs mb-6 leading-relaxed">
+              {t("footer.tagline")}
+            </p>
+            <div className="flex gap-3">
+              {socialIcons.map(({ Icon, href }, idx) => (
+                <a
+                  key={idx}
+                  href={href}
+                  className="w-9 h-9 rounded-xl bg-neutral-900 border border-white/5 flex items-center justify-center text-white/70 hover:bg-amber-500 hover:text-black hover:border-amber-500 transition-all duration-300"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Nav Lists */}
+          {Object.entries(footerLinks).map(([title, links], idx) => (
+            <div key={title}>
+              <h4 className="text-white font-black mb-6 uppercase tracking-[0.2em] text-[10px]">
+                {title}
+              </h4>
+              <ul className="space-y-3">
+                {links.map((link, lIdx) => (
+                  <li key={lIdx}>
+                    {link.href.startsWith("/") ? (
+                      <Link to={link.href} className="text-neutral-400 hover:text-amber-500 transition-colors text-xs font-medium">
+                        {link.name}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="text-neutral-400 hover:text-amber-500 transition-colors text-xs font-medium">
+                        {link.name}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          {/* Contact Details — Integrated as the 5th column */}
+          <div>
+            <h4 className="text-white font-black mb-6 uppercase tracking-[0.2em] text-[10px]">{t("footer.contact")}</h4>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3 group">
+                <MapPin className="w-4 h-4 text-amber-500 mt-0.5" />
+                <div>
+                  <p className="text-white font-bold text-xs">Addis Ababa</p>
+                  <p className="text-neutral-400 text-[10px] leading-relaxed mt-0.5">Bole Rd, Dembel Center</p>
+                </div>
+              </li>
+              <li className="flex items-center gap-3 group">
+                <Phone className="w-4 h-4 text-amber-500" />
+                <p className="text-neutral-400 text-xs font-medium">+251 115 123 456</p>
+              </li>
+              <li className="flex items-center gap-3 group">
+                <Mail className="w-4 h-4 text-amber-500" />
+                <p className="text-neutral-400 text-xs font-medium">hello@ethiodiscover.com</p>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <p className="text-neutral-500 text-xs font-medium">
+              &copy; {currentYear} EthioDiscover. Crafted with <span className="text-red-500">♥</span>
+            </p>
+            <div className="hidden md:block h-3 w-px bg-white/10"></div>
+            <div className="flex items-center gap-2">
+              <span className="text-neutral-500 text-[9px] tracking-widest uppercase font-bold">{t("footer.project")}</span>
+              <span className="text-white font-black text-[9px] tracking-widest uppercase">{t("footer.insa")}</span>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <a href="#" className="text-neutral-500 hover:text-white transition-colors text-[10px] uppercase tracking-widest font-black">{t("footer.security")}</a>
+            <a href="#" className="text-neutral-500 hover:text-white transition-colors text-[10px] uppercase tracking-widest font-black">{t("footer.status")}</a>
+            <a href="#" className="text-neutral-500 hover:text-white transition-colors text-[10px] uppercase tracking-widest font-black">{t("footer.careers")}</a>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

@@ -1,0 +1,166 @@
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
+
+/**
+ * Generates a premium "Digital Passport" PDF for an Ethiopian Tourism booking.
+ * @param {Object} ticket - The booking data object.
+ * @param {string} userName - The authenticated user's name.
+ * @param {Function} t - The translation function.
+ */
+export const generateDigitalPassport = (ticket, userName, t) => {
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4",
+  });
+
+  const primaryColor = "#F59E0B"; // Amber-500
+  const secondaryColor = "#171717"; // Neutral-900
+  const textColor = "#000000";
+
+  // 1. Draw Page Border (Tibeb Pattern Mockup)
+  doc.setDrawColor(primaryColor);
+  doc.setLineWidth(1.5);
+  doc.rect(5, 5, 200, 287); // Outer border
+  
+  // Inner decorative lines (simulating pattern)
+  doc.setLineWidth(0.5);
+  doc.rect(7, 7, 196, 283);
+
+  // 2. Header Section
+  doc.setFillColor(secondaryColor);
+  doc.rect(5, 5, 200, 35, "F");
+  
+  doc.setTextColor("#FFFFFF");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.text("ETHIOPIA", 105, 18, { align: "center" });
+  
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text(`${t("hero.title2")}: ${t("hero.subtitle").substring(0, 20)}...`.toUpperCase(), 105, 25, { align: "center" });
+  
+  doc.setDrawColor(primaryColor);
+  doc.setLineWidth(1);
+  doc.line(80, 28, 130, 28);
+
+  // 3. User Identity Section
+  doc.setTextColor(textColor);
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+  doc.text(t("checkout.identity").toUpperCase(), 20, 55);
+  
+  doc.setDrawColor("#E5E5E5");
+  doc.line(20, 58, 190, 58);
+
+  const leftCol = 25;
+  const rightCol = 105;
+  const startY = 70;
+
+  doc.setFontSize(9);
+  doc.setTextColor("#666666");
+  doc.text(t("dash.modal.name").toUpperCase(), leftCol, startY);
+  doc.text(t("dash.modal.passport").toUpperCase(), rightCol, startY);
+
+  doc.setFontSize(11);
+  doc.setTextColor(textColor);
+  doc.setFont("helvetica", "bold");
+  doc.text(userName.toUpperCase(), leftCol, startY + 6);
+  doc.text(ticket.passportId || "NOT PROVIDED", rightCol, startY + 6);
+
+  doc.setFontSize(9);
+  doc.setTextColor("#666666");
+  doc.text(t("checkout.nationality")?.toUpperCase() || "NATIONALITY", leftCol, startY + 20);
+  doc.text(t("checkout.docType")?.toUpperCase() || "DOCUMENT TYPE", rightCol, startY + 20);
+
+  doc.setFontSize(11);
+  doc.setTextColor(textColor);
+  doc.text("GLOBAL EXPLORER", leftCol, startY + 26);
+  doc.text("ELECTRONIC TRAVEL PERMIT", rightCol, startY + 26);
+
+  // 4. Journey Details Section
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+  doc.text(t("dest.detail.expedition").toUpperCase(), 20, 115);
+  doc.line(20, 118, 190, 118);
+
+  // Destination Box
+  doc.setFillColor("#F9FAFB");
+  doc.rect(20, 125, 170, 45, "F");
+  doc.setDrawColor("#EEEEEE");
+  doc.rect(20, 125, 170, 45, "S");
+
+  doc.setTextColor(primaryColor);
+  doc.setFontSize(10);
+  doc.text(t("dash.modal.destination").toUpperCase(), 25, 135);
+  
+  doc.setTextColor(textColor);
+  doc.setFontSize(18);
+  doc.text(ticket.destinationTitle.toUpperCase(), 25, 145);
+  
+  doc.setFontSize(9);
+  doc.setTextColor("#666666");
+  doc.text(`NETWORK ID: ${ticket.networkId}`, 25, 153);
+  doc.text(`${t("dash.modal.class").toUpperCase()}: ${ticket.travelClass.toUpperCase()}`, 25, 158);
+
+  // Grid Info
+  const detailY = 185;
+  doc.setFontSize(9);
+  doc.setTextColor("#666666");
+  doc.text(t("dash.modal.departure").toUpperCase(), leftCol, detailY);
+  doc.text(t("dash.modal.guests").toUpperCase(), rightCol, detailY);
+
+  doc.setFontSize(11);
+  doc.setTextColor(textColor);
+  doc.text(ticket.travelDate ? new Date(ticket.travelDate).toDateString() : "TBD", leftCol, detailY + 6);
+  doc.text(`${ticket.guests} PAX`, rightCol, detailY + 6);
+
+  // 5. Security & Verification Section
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+  doc.text("SECURITY & VERIFICATION", 20, 210);
+  doc.line(20, 213, 190, 213);
+
+  // Issue Hash
+  doc.setFontSize(8);
+  doc.setTextColor("#999999");
+  doc.text("UNIQUE ISSUE HASH (VERIFIABLE)", 20, 222);
+  
+  doc.setFont("courier", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(textColor);
+  doc.text(ticket.issueHash || "UNSH312ASH789", 20, 228);
+
+  // Mock QR Code Area
+  doc.setDrawColor("#000000");
+  doc.rect(150, 220, 30, 30);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7);
+  doc.text(t("dash.tickets.download").toUpperCase(), 165, 255, { align: "center" });
+  doc.text(t("admin.table.status").toUpperCase(), 165, 258, { align: "center" });
+  
+  // Fill the QR box with some "pattern"
+  for(let i=0; i<30; i+=3) {
+    for(let j=0; j<30; j+=3) {
+      if(Math.random() > 0.5) {
+        doc.setFillColor(0, 0, 0);
+        doc.rect(150 + i, 220 + j, 2, 2, "F");
+      }
+    }
+  }
+
+  // 6. Footer Legal
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(8);
+  doc.setTextColor("#999999");
+  const legalText = "This document is an official electronic travel permit generated by the Ethiopia Tourism Platform. It must be presented along with a valid Government ID at the destination checkpoints.";
+  doc.text(legalText, 105, 280, { align: "center", maxWidth: 170 });
+  
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(primaryColor);
+  doc.text("WWW.ETHIOPIA-TOURISM.GOV.ET", 105, 290, { align: "center" });
+
+  // 7. Save the PDF
+  const filename = `Passport_${ticket.destinationCode}_${userName.replace(/\s+/g, "_")}.pdf`;
+  doc.save(filename);
+};
