@@ -84,16 +84,17 @@ const PhoneMockup = () => {
 
   return (
     <div
-      className="relative flex items-center justify-center"
+      className="relative flex items-center justify-center origin-center"
       style={{
         width: `${containerW}px`,
         height: `${containerH}px`,
-        transition: 'width 0.55s cubic-bezier(0.4,0,0.2,1), height 0.55s cubic-bezier(0.4,0,0.2,1)',
+        transition: 'width 0.55s cubic-bezier(0.4,0,0.2,1), height 0.55s cubic-bezier(0.4,0,0.2,1), transform 0.3s ease',
+        transform: typeof window !== 'undefined' && window.innerWidth < 400 ? `scale(${window.innerWidth / 420})` : 'scale(1)',
       }}
     >
       {/* ── The ENTIRE phone rotates as one unit — frame + video together ── */}
       <motion.div
-        animate={{ rotate: isLandscape ? 90 : 0 }}
+        animate={{ rotate: isLandscape ? -90 : 0 }}
         transition={{ type: 'spring', stiffness: 120, damping: 22 }}
         style={{ width: `${PHONE_W}px`, height: `${PHONE_H}px`, flexShrink: 0 }}
         className="relative rounded-[2.5rem] border-[6px] border-neutral-700 bg-black shadow-2xl shadow-black/60 overflow-hidden"
@@ -225,17 +226,17 @@ const CinematicShorts = () => {
     <section
       id="shorts"
       ref={sectionRef}
-      className="relative bg-neutral-950 overflow-hidden py-20 md:py-0"
+      className="relative bg-neutral-950 overflow-hidden py-16 md:py-0"
     >
       {/* Ambient glow */}
       <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col md:flex-row items-center gap-16 md:gap-20 min-h-[80vh] md:min-h-screen">
 
-        {/* Phone Mockup — hidden on mobile to avoid overflow issues */}
+        {/* Phone Mockup — side-by-side on desktop, first on mobile for engagement */}
         <motion.div
           style={{ y: smoothPhoneY }}
-          className="hidden md:flex w-full md:w-5/12 justify-center"
+          className="flex w-full md:w-5/12 justify-center order-first md:order-first mt-0 md:mt-0"
         >
           <PhoneMockup />
         </motion.div>
@@ -252,7 +253,7 @@ const CinematicShorts = () => {
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[1.05] mb-8 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-8 tracking-tight">
             {t("video.shorts.title1")} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">
               {t("video.shorts.title2")}

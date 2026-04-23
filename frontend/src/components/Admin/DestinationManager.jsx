@@ -157,8 +157,8 @@ const DestinationManager = () => {
               <input type="text" name="duration" value={formData.duration} onChange={handleChange} className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 transition-colors" placeholder="e.g. 5–7 Days" />
             </div>
             <div>
-              <label className="block text-xs uppercase font-bold text-neutral-500 mb-2 tracking-widest">Base Price (USD) *</label>
-              <input required type="number" name="basePrice" value={formData.basePrice} onChange={handleChange} className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 transition-colors" placeholder="e.g. 350" />
+              <label className="block text-xs uppercase font-bold text-neutral-500 mb-2 tracking-widest">Base Price (USD)</label>
+              <input type="number" name="basePrice" value={formData.basePrice} onChange={handleChange} className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-500 transition-colors" placeholder="e.g. 350" />
             </div>
             <div>
               <label className="block text-xs uppercase font-bold text-neutral-500 mb-2 tracking-widest">Cloudinary Image URL *</label>

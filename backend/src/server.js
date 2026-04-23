@@ -11,6 +11,7 @@ require('./modules/auth/infrastructure/user.model');
 require('./modules/dashboard/infrastructure/booking.model');
 require('./modules/tourism/infrastructure/destination.model');
 require('./modules/tourism/infrastructure/favorite.model');
+require('./modules/tourism/infrastructure/culture.model');
 
 const PORT = env.port;
 

@@ -191,10 +191,10 @@ const TourManager = () => {
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-black text-neutral-500 mb-2 tracking-widest">Base Price (USD) *</label>
+                <label className="block text-[10px] uppercase font-black text-neutral-500 mb-2 tracking-widest">Base Price (USD)</label>
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-600 font-bold">$</div>
-                  <input required type="number" name="basePrice" value={formData.basePrice} onChange={handleChange} className="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-amber-500 transition-colors" placeholder="1200" />
+                  <input type="number" name="basePrice" value={formData.basePrice} onChange={handleChange} className="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-amber-500 transition-colors" placeholder="1200" />
                 </div>
               </div>
               <div>

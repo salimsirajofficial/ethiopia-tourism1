@@ -4,6 +4,7 @@ require('./src/modules/auth/infrastructure/user.model');
 require('./src/modules/tourism/infrastructure/destination.model');
 require('./src/modules/tourism/infrastructure/favorite.model');
 require('./src/modules/tourism/infrastructure/tour.model');
+require('./src/modules/tourism/infrastructure/culture.model');
 
 async function syncDb() {
   try {

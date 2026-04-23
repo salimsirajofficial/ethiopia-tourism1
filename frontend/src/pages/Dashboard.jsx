@@ -389,10 +389,10 @@ const Dashboard = () => {
           setUser(userData);
           setUserName(userData.name);
           setFormData({ 
-            fullName: userData.name || "", 
-            nationalIdNumber: userData.nationalIdNumber || "", 
-            passportNumber: userData.passportNumber || "",
-            phoneNumber: userData.phoneNumber || ""
+            fullName: userData.name || userData.full_name || "", 
+            nationalIdNumber: userData.nationalIdNumber || userData.national_id_number || "", 
+            passportNumber: userData.passportNumber || userData.passport_number || "",
+            phoneNumber: userData.phoneNumber || userData.phone_number || userData.phone || ""
           });
           
           const savedAvatar = userData.avatar_url || localStorage.getItem("userAvatar");
@@ -557,12 +557,12 @@ const Dashboard = () => {
 
       {/* ── Mobile Navigation ── */}
       <header className="lg:hidden fixed top-0 w-full z-[60] bg-neutral-950/80 backdrop-blur-xl border-b border-white/5 p-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <button onClick={() => navigate("/")} className="flex items-center gap-3">
           <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-black">
             <Plane size={18} strokeWidth={3} />
           </div>
           <span className="text-lg font-black tracking-tighter uppercase">Command</span>
-        </div>
+        </button>
         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-3 bg-white/5 rounded-2xl text-white">
           {isSidebarOpen ? <XCircle size={24} /> : <Menu size={24} />}
         </button>
@@ -581,7 +581,8 @@ const Dashboard = () => {
               <SidebarItem id="bookings" icon={CalendarIcon} label="Expeditions" />
               <SidebarItem id="favorites" icon={Heart} label="Favorites" />
               <SidebarItem id="settings" icon={User} label="Settings" />
-              <div className="pt-4 mt-4 border-t border-white/5">
+              <div className="pt-4 mt-4 border-t border-white/5 space-y-2">
+                <SidebarItem id="home" icon={Home} label="Return Home" />
                 <SidebarItem id="logout" icon={LogOut} label="Log Out" danger />
               </div>
             </nav>
@@ -675,7 +676,7 @@ const Dashboard = () => {
                       <h3 className="text-xs font-black uppercase tracking-[0.3em] text-white/40 ml-2">Recent Booking</h3>
                       {bookings.length > 0 ? (
                         <div className="p-8 bg-neutral-900 border border-white/5 rounded-[2.5rem] flex items-center gap-6 group cursor-pointer" onClick={() => setActiveTab('bookings')}>
-                           <div className="w-16 h-16 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
+                           <div className="w-16 h-16 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 bg-neutral-800">
                               <img src={destinationsList.find(d => d.code === bookings[0].destinationCode)?.image || "/assets/images/ethiopia/image3.jpg"} className="w-full h-full object-cover" alt="dest" />
                            </div>
                            <div className="flex-1">
@@ -696,7 +697,7 @@ const Dashboard = () => {
                       <h3 className="text-xs font-black uppercase tracking-[0.3em] text-white/40 ml-2">Favorite Waypoint</h3>
                       {favorites.length > 0 ? (
                         <div className="p-8 bg-neutral-900 border border-white/5 rounded-[2.5rem] flex items-center gap-6 group cursor-pointer" onClick={() => setActiveTab('favorites')}>
-                           <div className="w-16 h-16 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
+                           <div className="w-16 h-16 rounded-2xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 bg-neutral-800">
                               <img src={favorites[0].destination?.image || "/assets/images/ethiopia/image8.jpg"} className="w-full h-full object-cover" alt="fav" />
                            </div>
                            <div className="flex-1">
@@ -734,8 +735,8 @@ const Dashboard = () => {
                       return (
                         <Card key={ticket.id} className="bg-neutral-900/60 border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-xl group hover:border-amber-500/30 transition-all duration-500 shadow-2xl">
                           <CardContent className="p-0 flex flex-col md:flex-row">
-                            <div className="w-full md:w-64 h-40 md:h-auto relative overflow-hidden">
-                              <img src={dest?.image || "/assets/images/ethiopia/image3.jpg"} className="absolute inset-0 w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 hover:scale-110" alt="img" />
+                            <div className="w-full md:w-64 h-40 md:h-auto relative overflow-hidden bg-neutral-800 flex items-center justify-center">
+                              <img src={`${dest?.image || "/assets/images/ethiopia/image3.jpg"}?v=1`} className="absolute inset-0 w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700 hover:scale-110" alt="Expedition Visual" />
                               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-neutral-900/90" />
                             </div>
                             <div className="flex-1 p-8">
@@ -750,35 +751,35 @@ const Dashboard = () => {
                                   </div>
                                </div>
                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                                  <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
+                                   <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
                                     <p className="text-[8px] font-black uppercase tracking-[0.2em] text-white/30 mb-1">Traveler</p>
-                                    <p className="text-sm font-bold text-white truncate">{ticket.travelerName}</p>
+                                    <p className="text-sm font-bold text-white truncate">{ticket.travelerName || userName}</p>
                                   </div>
                                   <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
                                     <p className="text-[8px] font-black uppercase tracking-[0.2em] text-white/30 mb-1">Departure</p>
-                                    <p className="text-sm font-bold text-white">{ticket.travelDate}</p>
+                                    <p className="text-sm font-bold text-white">{ticket.travelDate || ticket.departure_date || "N/A"}</p>
                                   </div>
                                   <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
                                     <p className="text-[8px] font-black uppercase tracking-[0.2em] text-white/30 mb-1">Class</p>
-                                    <p className="text-sm font-bold text-white uppercase">{ticket.travelClass}</p>
+                                    <p className="text-sm font-bold text-white uppercase">{ticket.travelClass || "Economy"}</p>
                                   </div>
                                   <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
                                     <p className="text-[8px] font-black uppercase tracking-[0.2em] text-white/30 mb-1">Guests</p>
-                                    <p className="text-sm font-bold text-white">{ticket.guests} PAX</p>
+                                    <p className="text-sm font-bold text-white">{ticket.guests || 1} PAX</p>
                                   </div>
                                </div>
-                               <div className="flex gap-3 pt-6 border-t border-white/10">
+                               <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-white/10">
                                   {ticket.status !== 'cancelled' && (
-                                    <Button onClick={() => generateDigitalPassport(ticket, userName, t)} className="h-10 px-6 rounded-xl font-bold bg-amber-500 text-black hover:bg-amber-600 transition-all uppercase text-[10px] tracking-widest flex items-center gap-2 shadow-lg shadow-amber-500/20">
+                                    <Button onClick={() => generateDigitalPassport(ticket, userName, t)} className="w-full sm:w-auto h-12 px-6 rounded-xl font-bold bg-amber-500 text-black hover:bg-amber-600 transition-all uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20">
                                       <Download size={14} /> Download PDF
                                     </Button>
                                   )}
                                   {ticket.status !== 'cancelled' ? (
-                                    <Button onClick={() => handleCancel(ticket.id)} variant="outline" className="h-10 px-6 rounded-xl font-bold border-white/10 text-red-500 hover:bg-red-500/10 uppercase text-[10px] tracking-widest">
+                                    <Button onClick={() => handleCancel(ticket.id)} variant="outline" className="w-full sm:w-auto h-12 px-6 rounded-xl font-bold border-white/10 text-red-500 hover:bg-red-500/10 uppercase text-[10px] tracking-widest">
                                       Cancel Expedition
                                     </Button>
                                   ) : (
-                                    <Button onClick={() => handleDelete(ticket.id)} variant="outline" className="h-10 px-6 rounded-xl font-bold border-white/10 text-white/40 hover:bg-white/10 uppercase text-[10px] tracking-widest">
+                                    <Button onClick={() => handleDelete(ticket.id)} variant="outline" className="w-full sm:w-auto h-12 px-6 rounded-xl font-bold border-white/10 text-white/40 hover:bg-white/10 uppercase text-[10px] tracking-widest">
                                       Remove Log
                                     </Button>
                                   )}
@@ -821,7 +822,7 @@ const Dashboard = () => {
                         initial={{ opacity: 0, scale: 0.9 }} 
                         animate={{ opacity: 1, scale: 1 }} 
                         transition={{ delay: i * 0.05 }}
-                        className="group relative h-80 rounded-[2.5rem] overflow-hidden bg-neutral-900 border border-white/5 cursor-pointer shadow-xl"
+                        className="group relative h-80 rounded-[2.5rem] overflow-hidden bg-neutral-800 border border-white/5 cursor-pointer shadow-xl flex items-center justify-center"
                         onClick={() => navigate(`/destinations/${dest.destinationId}`)}
                       >
                          <img src={dest.destination?.image || "/assets/images/ethiopia/image3.jpg"} className="absolute inset-0 w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000" alt="fav-img" />

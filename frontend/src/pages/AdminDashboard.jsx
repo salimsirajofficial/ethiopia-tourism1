@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import api from "../api/axios";
 import DestinationManager from "../components/Admin/DestinationManager";
 import TourManager from "../components/Admin/TourManager";
+import CultureManager from "../components/Admin/CultureManager";
 import { useTranslation } from "react-i18next";
 
 // SVG Icons
@@ -14,7 +15,8 @@ const LogoutIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" heig
 const GlobeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>;
 const BellIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>;
 const CloseIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>;
-const ToursIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 17v1c0 .5-.5 1-1 1H3c-.5 0-1-.5-1-1v-1"/><path d="m11 17-7-7c-1.1-1.1-1.1-2.9 0-4l3-3c1.1-1.1 2.9-1.1 4 0l7 7c1.1 1.1 1.1 2.9 0 4l-3 3c-1.1 1.1-2.9 1.1-4 0Z"/><path d="m15 5 4 4"/></svg>;
+const ToursIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m11 17-7-7c-1.1-1.1-1.1-2.9 0-4l3-3c1.1-1.1 2.9-1.1 4 0l7 7c1.1 1.1 1.1 2.9 0 4l-3 3c-1.1 1.1-2.9 1.1-4 0Z"/><path d="m15 5 4 4"/><path d="M22 17v1c0 .5-.5 1-1 1H3c-.5 0-1-.5-1-1v-1"/></svg>;
+const CultureIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18Z"/><path d="M12 8v4"/><path d="M12 16h.01"/><path d="M15 11l-3 3-3-3"/></svg>;
 
 const AdminDashboard = ({ onLogout }) => {
   const { t } = useTranslation();
@@ -327,6 +329,9 @@ const AdminDashboard = ({ onLogout }) => {
           <button onClick={() => setActiveTab("tours")} className={`flex items-center w-full text-left gap-3 px-3 py-2.5 rounded-xl font-bold transition-all border ${activeTab === 'tours' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'border-transparent text-neutral-400 hover:text-white hover:bg-neutral-900'}`}>
             <ToursIcon /> {t("admin.nav.tours")}
           </button>
+          <button onClick={() => setActiveTab("culture")} className={`flex items-center w-full text-left gap-3 px-3 py-2.5 rounded-xl font-bold transition-all border ${activeTab === 'culture' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'border-transparent text-neutral-400 hover:text-white hover:bg-neutral-900'}`}>
+            <CultureIcon /> {t("Culture")}
+          </button>
           <button className="flex items-center w-full text-left gap-3 px-3 py-2.5 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-900 transition-all font-medium">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             {t("admin.nav.travelers")}
@@ -350,10 +355,10 @@ const AdminDashboard = ({ onLogout }) => {
           <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h2 className="text-3xl font-black tracking-tight text-white">
-                {activeTab === 'dashboard' ? t("admin.header.overview") : activeTab === 'destinations' ? t("admin.nav.destinations") : t("admin.nav.tours")}
+                {activeTab === 'dashboard' ? t("admin.header.overview") : activeTab === 'destinations' ? t("admin.nav.destinations") : activeTab === 'tours' ? t("admin.nav.tours") : t("Culture")}
               </h2>
               <p className="text-neutral-400 mt-1">
-                {activeTab === 'dashboard' ? t("admin.header.metrics") : activeTab === 'destinations' ? t("admin.header.manageDest") : t("admin.header.manageTours")}
+                {activeTab === 'dashboard' ? t("admin.header.metrics") : activeTab === 'destinations' ? t("admin.header.manageDest") : activeTab === 'tours' ? t("admin.header.manageTours") : "Manage cultural heritage archives"}
               </p>
             </div>
             
@@ -361,6 +366,7 @@ const AdminDashboard = ({ onLogout }) => {
                 <button onClick={() => setActiveTab('dashboard')} className={`px-4 py-2 text-center rounded-lg text-xs font-medium border shrink-0 ${activeTab === 'dashboard' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-neutral-900 border-neutral-800'}`}>{t("admin.nav.dashboard")}</button>
                 <button onClick={() => setActiveTab('destinations')} className={`px-4 py-2 text-center rounded-lg text-xs font-medium border shrink-0 ${activeTab === 'destinations' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-neutral-900 border-neutral-800'}`}>{t("admin.nav.destinations")}</button>
                 <button onClick={() => setActiveTab('tours')} className={`px-4 py-2 text-center rounded-lg text-xs font-medium border shrink-0 ${activeTab === 'tours' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-neutral-900 border-neutral-800'}`}>{t("admin.nav.tours")}</button>
+                <button onClick={() => setActiveTab('culture')} className={`px-4 py-2 text-center rounded-lg text-xs font-medium border shrink-0 ${activeTab === 'culture' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-neutral-900 border-neutral-800'}`}>{t("Culture")}</button>
                 <button onClick={onLogout} className="px-4 py-2 text-center bg-red-500/10 text-red-500 rounded-lg text-xs font-medium border border-red-500/20 shrink-0">{t("admin.nav.logout")}</button>
              </div>
           </header>
@@ -369,6 +375,8 @@ const AdminDashboard = ({ onLogout }) => {
             <DestinationManager />
           ) : activeTab === "tours" ? (
             <TourManager />
+          ) : activeTab === "culture" ? (
+            <CultureManager />
           ) : (
             <>
           {/* Top Section */}

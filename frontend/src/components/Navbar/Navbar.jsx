@@ -141,6 +141,7 @@ const Navbar = () => {
   const [hidden, setHidden] = useState(false);
   const [userName, setUserName] = useState(null);
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [langOpen, setLangOpen] = useState(false);
   const lastScrollY = useRef(0);
 
   const BACKEND_URL = "http://localhost:5000";
@@ -210,13 +211,15 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-5 md:px-10 flex items-center justify-between">
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group">
-            <EthiopiaMap className="w-10 h-10 text-amber-500 group-hover:scale-110 transition-transform duration-500" />
-            <span className="text-2xl font-black text-white tracking-tight">
-              Ethio<span className="text-amber-500">Discover</span>
-            </span>
-          </Link>
+          {/* Logo — blurs when mobile menu is open */}
+          <div className={`transition-all duration-300 ${isOpen ? 'blur-sm opacity-40 pointer-events-none' : ''}`}>
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <EthiopiaMap className="w-10 h-10 text-amber-500 group-hover:scale-110 transition-transform duration-500" />
+              <span className="text-2xl font-black text-white tracking-tight">
+                Ethio<span className="text-amber-500">Discover</span>
+              </span>
+            </Link>
+          </div>
 
           {/* Desktop nav links */}
           <div className="hidden md:flex items-center gap-1">
@@ -292,94 +295,50 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu — compact, blurred, with collapsible language panel */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden overflow-hidden bg-neutral-950/95 backdrop-blur-xl border-t border-white/5"
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              className="md:hidden bg-neutral-950/80 backdrop-blur-2xl border-t border-white/8 shadow-2xl shadow-black/60"
             >
-              <div className="flex flex-col px-6 py-8 gap-1">
-                {/* Mobile Language Selector Redesigned */}
-                <div className="mb-8 pt-2">
-                  <div className="flex items-center gap-3 mb-5 px-1">
-                    <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                      <Globe size={14} className="text-amber-500" />
-                    </div>
-                    <span className="text-[11px] font-black uppercase tracking-[0.25em] text-white/40">
-                      {t("nav.select_language")} / ቋንቋ
-                    </span>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-3">
-                    {languages.map((lng) => {
-                      const isActive = i18n.resolvedLanguage === lng.code;
-                      return (
-                        <button
-                          key={lng.code}
-                          onClick={() => {
-                            i18n.changeLanguage(lng.code);
-                            document.documentElement.dir = lng.code === "ar" ? "rtl" : "ltr";
-                            document.documentElement.lang = lng.code;
-                          }}
-                          className={`flex items-center justify-center gap-3 p-4 rounded-2xl border transition-all duration-300 ${
-                            isActive
-                              ? "bg-amber-500 border-amber-400 text-black shadow-xl shadow-amber-500/20"
-                              : "bg-white/5 border-white/5 text-white/50 hover:bg-white/10 hover:border-white/10"
-                          }`}
-                        >
-                          <span className={`text-xs font-black tracking-widest ${isActive ? "opacity-100" : "opacity-40"}`}>
-                            {lng.label}
-                          </span>
-                          <span className="text-[11px] font-bold">
-                            {lng.code === "en" ? "English" :
-                             lng.code === "fr" ? "French" :
-                             lng.code === "ar" ? "Arabic" :
-                             "Amharic"}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+              <div className="flex flex-col px-5 py-5 gap-0.5">
 
+                {/* Nav Links — compact size */}
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.label}
                     href={link.href}
-                    initial={{ opacity: 0, x: -16 }}
+                    initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.07 }}
+                    transition={{ delay: i * 0.05 }}
                     onClick={() => setIsOpen(false)}
-                    className="text-white text-xl font-black py-3 border-b border-white/5 hover:text-amber-400 transition-colors"
+                    className="text-white/90 text-base font-bold py-2.5 border-b border-white/5 hover:text-amber-400 transition-colors"
                   >
                     {t(link.label)}
                   </motion.a>
                 ))}
 
-                <div className="flex flex-col gap-3 mt-6">
+                {/* Auth Buttons — compact */}
+                <div className="flex gap-2 mt-4">
                   {userName ? (
                     <>
                       <Link
                         to="/dashboard"
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center justify-center gap-3 w-full text-center py-3.5 bg-white/5 border border-white/15 text-white font-bold rounded-full hover:border-amber-500/50 transition-colors"
+                        className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-white/5 border border-white/10 text-white text-sm font-bold rounded-full hover:border-amber-500/40 transition-colors"
                       >
-                        <User size={16} className="text-amber-500" />
-                        <span>{userName}</span> – {t("Dashboard")}
+                        <User size={13} className="text-amber-500" />
+                        <span className="truncate max-w-[100px]">{userName}</span>
                       </Link>
                       <button
-                        onClick={() => {
-                          handleLogout();
-                          setIsOpen(false);
-                        }}
-                        className="flex items-center justify-center gap-3 w-full text-center py-3.5 bg-red-500/5 text-red-400 border border-red-500/10 font-bold rounded-full hover:bg-red-500/20 transition-colors"
+                        onClick={() => { handleLogout(); setIsOpen(false); }}
+                        className="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-red-500/8 text-red-400 border border-red-500/15 text-sm font-bold rounded-full hover:bg-red-500/20 transition-colors"
                       >
-                        <LogOut size={16} />
-                        {t("Log Out")}
+                        <LogOut size={13} />
                       </button>
                     </>
                   ) : (
@@ -387,20 +346,83 @@ const Navbar = () => {
                       <Link
                         to="/login"
                         onClick={() => setIsOpen(false)}
-                        className="w-full text-center py-3.5 border border-white/15 text-white font-bold rounded-full hover:border-amber-500/50 transition-colors"
+                        className="flex-1 text-center py-2.5 border border-white/15 text-white text-sm font-bold rounded-full hover:border-amber-500/40 transition-colors"
                       >
                         {t("Log In")}
                       </Link>
                       <Link
                         to="/tours"
                         onClick={() => setIsOpen(false)}
-                        className="w-full text-center py-3.5 bg-amber-500 text-black font-black rounded-full hover:bg-amber-400 transition-colors uppercase tracking-wider"
+                        className="flex-1 text-center py-2.5 bg-amber-500 text-black text-sm font-black rounded-full hover:bg-amber-400 transition-colors uppercase tracking-wider"
                       >
                         {t("Book Now")}
                       </Link>
                     </>
                   )}
                 </div>
+
+                {/* Language Section — collapsed by default, toggled by globe icon */}
+                <div className="mt-3 border-t border-white/5 pt-3">
+                  <button
+                    onClick={() => setLangOpen(!langOpen)}
+                    className="flex items-center gap-2.5 w-full py-1.5 text-white/40 hover:text-white/70 transition-colors"
+                  >
+                    <Globe size={14} className={`transition-colors ${langOpen ? 'text-amber-500' : ''}`} />
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+                      {languages.find(l => l.code === i18n.resolvedLanguage)?.label || 'EN'}
+                      {' · '}
+                      {i18n.resolvedLanguage === 'en' ? 'English' : i18n.resolvedLanguage === 'fr' ? 'French' : i18n.resolvedLanguage === 'ar' ? 'Arabic' : 'Amharic'}
+                    </span>
+                    <motion.svg
+                      animate={{ rotate: langOpen ? 180 : 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="w-3 h-3 ml-auto opacity-40"
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </motion.svg>
+                  </button>
+
+                  <AnimatePresence>
+                    {langOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="grid grid-cols-2 gap-2 pt-2.5 pb-1">
+                          {languages.map((lng) => {
+                            const isActive = i18n.resolvedLanguage === lng.code;
+                            return (
+                              <button
+                                key={lng.code}
+                                onClick={() => {
+                                  i18n.changeLanguage(lng.code);
+                                  document.documentElement.dir = lng.code === 'ar' ? 'rtl' : 'ltr';
+                                  document.documentElement.lang = lng.code;
+                                  setLangOpen(false);
+                                }}
+                                className={`flex items-center justify-center gap-2 py-2.5 rounded-xl border text-xs transition-all duration-200 ${
+                                  isActive
+                                    ? 'bg-amber-500 border-amber-400 text-black font-black shadow-lg shadow-amber-500/20'
+                                    : 'bg-white/4 border-white/5 text-white/50 hover:bg-white/8 hover:border-white/10 font-semibold'
+                                }`}
+                              >
+                                <span className="font-black text-[10px] tracking-widest">{lng.label}</span>
+                                <span className="text-[10px]">
+                                  {lng.code === 'en' ? 'English' : lng.code === 'fr' ? 'French' : lng.code === 'ar' ? 'Arabic' : 'Amharic'}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
               </div>
             </motion.div>
           )}
