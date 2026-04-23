@@ -7,15 +7,15 @@ import { useTranslation } from "react-i18next";
 const staticDestinations = [
   {
     id: 1,
-    title: "Lalibela",
+    title: "destinations.items.lalibela.title",
     amharic: "ላሊበላ",
-    region: "ሰሜን · North",
-    description: "Eleven 12th-century churches...",
+    region: "destinations.items.lalibela.region",
+    description: "destinations.items.lalibela.desc",
     image: "/assets/images/ethiopia/image1.jpg",
-    tag: "UNESCO Heritage",
+    tag: "destinations.items.lalibela.tag",
     color: "from-amber-900/80",
-    bestTime: "Oct — Mar",
-    duration: "2–3 Days",
+    bestTime: "destinations.items.lalibela.season",
+    duration: "destinations.items.lalibela.duration",
   }
 ];
 
@@ -57,7 +57,7 @@ const ParallaxCard = ({ dest, index, isFeature, onClick, isFavorite, onToggleFav
         </div>
         <div className="flex flex-col items-end gap-2">
           <span className="bg-amber-500 text-black text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wide shadow-xl">
-            {dest.tag}
+            {t(dest.tag)}
           </span>
           <button 
             onClick={(e) => onToggleFav(e, dest.id)}
@@ -72,13 +72,13 @@ const ParallaxCard = ({ dest, index, isFeature, onClick, isFavorite, onToggleFav
       <div className="absolute bottom-0 left-0 w-full z-20 p-6">
         <div className="translate-y-2 group-hover:translate-y-0 transition-transform duration-500 ease-out">
           <div className="text-[9px] text-amber-400/80 uppercase tracking-[0.25em] font-bold mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            {dest.region}
+            {t(dest.region)}
           </div>
           <h3 className={`font-black text-white mb-1 leading-tight ${isFeature ? "text-4xl md:text-5xl" : "text-2xl"}`}>
-            {dest.title}
+            {t(dest.title)}
           </h3>
           <p className="text-neutral-300 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-all duration-400 delay-100 line-clamp-3 max-w-sm mb-4">
-            {dest.description}
+            {t(dest.description)}
           </p>
           {/* Stats row */}
           <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150 mb-4">
@@ -86,13 +86,13 @@ const ParallaxCard = ({ dest, index, isFeature, onClick, isFavorite, onToggleFav
               <svg className="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              {dest.bestTime}
+              {t(dest.bestTime)}
             </span>
             <span className="flex items-center gap-1.5 text-white/60 text-[11px]">
               <svg className="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {dest.duration}
+              {t(dest.duration)}
             </span>
           </div>
           <button className="flex items-center gap-2 text-xs font-black tracking-widest uppercase text-black bg-amber-500 hover:bg-amber-400 px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 delay-200">
@@ -151,11 +151,11 @@ const DestinationModal = ({ destination, onClose }) => {
           </button>
           <div className="absolute bottom-6 left-8">
             <div className="flex items-center gap-3 mb-2">
-              <span className="text-amber-500 text-xs font-black tracking-widest uppercase">{destination.tag}</span>
+              <span className="text-amber-500 text-xs font-black tracking-widest uppercase">{t(destination.tag)}</span>
               <span className="w-1 h-1 rounded-full bg-white/30" />
-              <span className="text-white/50 text-xs">{destination.region}</span>
+              <span className="text-white/50 text-xs">{t(destination.region)}</span>
             </div>
-            <h2 className="text-5xl font-black text-white leading-tight">{destination.title}</h2>
+            <h2 className="text-5xl font-black text-white leading-tight">{t(destination.title)}</h2>
             <p className="text-amber-400/80 font-bold text-lg mt-1">{destination.amharic}</p>
           </div>
         </div>
@@ -163,7 +163,7 @@ const DestinationModal = ({ destination, onClose }) => {
         {/* Body */}
         <div className="p-8 md:p-10 grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2">
-            <p className="text-neutral-300 text-base leading-relaxed mb-6">{destination.description}</p>
+            <p className="text-neutral-300 text-base leading-relaxed mb-6">{t(destination.description)}</p>
             <div className="flex gap-4 flex-wrap">
               <button 
                 onClick={handlePlanVisit}
@@ -179,10 +179,10 @@ const DestinationModal = ({ destination, onClose }) => {
           <div className="backdrop-blur-xl bg-white/5 border border-white/10 p-6 rounded-2xl space-y-4">
             <h3 className="text-white font-black text-sm uppercase tracking-widest mb-4">{t("common.quickFacts")}</h3>
             {[
-              [t("common.bestTime"), destination.bestTime],
-              [t("common.duration"), destination.duration],
-              [t("common.region"), destination.region],
-              [t("common.category"), destination.tag],
+              [t("common.bestTime"), t(destination.bestTime)],
+              [t("common.duration"), t(destination.duration)],
+              [t("common.region"), t(destination.region)],
+              [t("common.category"), t(destination.tag)],
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between text-sm border-b border-white/5 pb-3 last:border-0 last:pb-0">
                 <span className="text-neutral-500">{k}</span>
