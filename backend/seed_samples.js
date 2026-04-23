@@ -2,6 +2,7 @@ require('dotenv').config();
 const sequelize = require('./src/shared/db/sequelize');
 const Destination = require('./src/modules/tourism/infrastructure/destination.model');
 const Tour = require('./src/modules/tourism/infrastructure/tour.model');
+const Culture = require('./src/modules/tourism/infrastructure/culture.model');
 
 const videos = [
   "https://res.cloudinary.com/dywydpgjg/video/upload/v1776563937/video1_eyig4b.mp4",
@@ -159,6 +160,29 @@ const sampleTours = [
   }
 ];
 
+const sampleCultures = [
+  {
+    title: "culture.items.coffee.title",
+    amharic: "ቡና ቤት",
+    label: "ምግብ · Origins",
+    description: "culture.items.coffee.desc",
+    detail: "45–90 min",
+    image: "/assets/images/ethiopia/image6.jpg",
+    accent: "from-amber-900/80",
+    number: "01",
+  },
+  {
+    title: "culture.items.eskista.title",
+    amharic: "እስኪስታ",
+    label: "ጥበብ · Arts",
+    description: "culture.items.eskista.desc",
+    detail: "80+ Ethnic Groups",
+    image: "/assets/images/ethiopia/image7.jpg",
+    accent: "from-rose-900/80",
+    number: "02",
+  },
+];
+
 async function seedSamples() {
   try {
     await sequelize.authenticate();
@@ -181,6 +205,15 @@ async function seedSamples() {
         await existing.update(tour);
       }
       console.log(`Seeded Tour: ${tour.title}`);
+    }
+
+    // Seed Sample Cultures
+    for (const item of sampleCultures) {
+      await Culture.findOrCreate({
+        where: { title: item.title },
+        defaults: item
+      });
+      console.log(`Seeded Culture: ${item.title}`);
     }
 
     console.log('Sample media data seeded successfully.');

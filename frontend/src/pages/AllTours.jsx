@@ -68,9 +68,7 @@ const AllTours = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12"
           >
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-amber-500 text-[10px] font-black uppercase tracking-[0.4em] mb-8">
-              <Zap size={14} className="animate-pulse" /> {t("tours.all.masterList")}
-            </span>
+
             <h1 className="text-7xl md:text-9xl font-black tracking-tighter mb-8 leading-[0.85] uppercase">
               {t("tours.all.title1")} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600 italic">{t("tours.all.title2")}</span>

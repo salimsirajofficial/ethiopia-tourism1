@@ -65,7 +65,7 @@ export const generateDigitalPassport = (ticket, userName, t) => {
   doc.setFontSize(11);
   doc.setTextColor(textColor);
   doc.setFont("helvetica", "bold");
-  doc.text(userName.toUpperCase(), leftCol, startY + 6);
+  doc.text((userName || "NOT PROVIDED").toUpperCase(), leftCol, startY + 6);
   doc.text(ticket.passportId || "NOT PROVIDED", rightCol, startY + 6);
 
   doc.setFontSize(9);
@@ -96,12 +96,12 @@ export const generateDigitalPassport = (ticket, userName, t) => {
   
   doc.setTextColor(textColor);
   doc.setFontSize(18);
-  doc.text(ticket.destinationTitle.toUpperCase(), 25, 145);
+  doc.text((ticket.destinationTitle || ticket.destinationCode || "EXPLORATION").toUpperCase(), 25, 145);
   
   doc.setFontSize(9);
   doc.setTextColor("#666666");
-  doc.text(`NETWORK ID: ${ticket.networkId}`, 25, 153);
-  doc.text(`${t("dash.modal.class").toUpperCase()}: ${ticket.travelClass.toUpperCase()}`, 25, 158);
+  doc.text(`NETWORK ID: ${ticket.networkId || "ETH-0000"}`, 25, 153);
+  doc.text(`${(t("dash.modal.class") || "CLASS").toUpperCase()}: ${(ticket.travelClass || "ECONOMY").toUpperCase()}`, 25, 158);
 
   // Grid Info
   const detailY = 185;
@@ -161,6 +161,6 @@ export const generateDigitalPassport = (ticket, userName, t) => {
   doc.text("WWW.ETHIOPIA-TOURISM.GOV.ET", 105, 290, { align: "center" });
 
   // 7. Save the PDF
-  const filename = `Passport_${ticket.destinationCode}_${userName.replace(/\s+/g, "_")}.pdf`;
+  const filename = `Passport_${ticket.destinationCode || "ETH"}_${(userName || "NA").replace(/\s+/g, "_")}.pdf`;
   doc.save(filename);
 };

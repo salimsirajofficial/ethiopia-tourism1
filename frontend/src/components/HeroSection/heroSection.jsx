@@ -121,24 +121,7 @@ const HeroSection = () => {
           </Link>
         </motion.div>
 
-        {/* Stats strip */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.3 }}
-          className="absolute bottom-16 flex gap-12 text-center"
-        >
-          {[
-            { value: "9", label: t("hero.stat1") },
-            { value: "80+", label: t("hero.stat2") },
-            { value: "3000+", label: t("hero.stat3") },
-          ].map((stat) => (
-            <div key={stat.label} className="text-white">
-              <div className="text-2xl md:text-3xl font-black text-amber-400">{stat.value}</div>
-              <div className="text-[10px] uppercase tracking-[0.2em] text-white/50 mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </motion.div>
+
       </motion.div>
 
       {/* Scroll indicator */}

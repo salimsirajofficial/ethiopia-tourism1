@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import {
   User, Mail, Phone, Lock, CalendarDays, MapPin,
   Users, Plane, CheckCircle2, ChevronRight, ArrowLeft,
-  Wallet, ShieldCheck, Info, CreditCard
+  Wallet, ShieldCheck, Info, CreditCard, ArrowRight
 } from "lucide-react";
 import Navbar from "../components/Navbar/Navbar";
 import { Card, CardContent } from "../components/ui/card";
@@ -90,6 +90,10 @@ const Checkout = () => {
       setIsLoggedIn(true);
       const savedName = localStorage.getItem("userName");
       if (savedName) setFormData(prev => ({ ...prev, name: savedName }));
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.email) setFormData(prev => ({ ...prev, email: payload.email }));
+      } catch (e) {}
     }
   }, [location.state]);
 
@@ -135,13 +139,28 @@ const Checkout = () => {
   const handleConfirm = async () => {
     setIsLoading(true);
     try {
-      const dataToSend = new FormData();
+      const token = localStorage.getItem("token");
 
-      // Append files
+      if (isLoggedIn && token) {
+        // Logged-in user: just create a booking with auth header
+        const { data } = await api.post("/checkout", {
+          destinationCode: formData.destinationCode,
+          travelDate: formData.travelDate,
+          returnDate: formData.returnDate,
+          guests: formData.guests,
+          travelClass: formData.travelClass,
+          specialRequests: formData.specialRequests,
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        navigate("/dashboard");
+        return;
+      }
+
+      // Guest user: full registration + booking
+      const dataToSend = new FormData();
       if (avatarFile) dataToSend.append("avatar", avatarFile);
       if (passportFile) dataToSend.append("passport", passportFile);
-
-      // Append other form fields
       Object.keys(formData).forEach(key => {
         dataToSend.append(key, formData[key]);
       });
@@ -155,7 +174,7 @@ const Checkout = () => {
       if (data.user?.avatar_url) localStorage.setItem("userAvatar", data.user.avatar_url);
       if (data.user?.passport_image_url) localStorage.setItem("userPassport", data.user.passport_image_url);
 
-      setStep(3); // Go to success step
+      navigate("/dashboard");
     } catch (error) {
       console.error("Checkout submission failed:", error);
       alert(error.response?.data?.message || t("dash.modal.error.failed"));
@@ -168,12 +187,12 @@ const Checkout = () => {
     <div className="min-h-screen bg-neutral-950 flex flex-col relative overflow-x-hidden">
       <Navbar />
 
-      <div className="flex-grow flex items-center justify-center px-6 py-12 pt-28">
+      <div className="flex-grow flex items-center justify-center px-4 sm:px-6 py-6 sm:py-12 pt-24 sm:pt-28">
         <div className="w-full max-w-6xl">
 
           <Card className="overflow-hidden border-none shadow-2xl rounded-[2rem] bg-[#1A1A1A] max-w-5xl mx-auto border border-white/5 relative">
-            <CardContent className="grid p-0 md:grid-cols-[1.2fr_0.8fr]">
-              <div className="p-8 md:p-14 relative">
+            <CardContent className="grid p-0 grid-cols-1 lg:grid-cols-[1.2fr_0.8fr]">
+              <div className="p-5 sm:p-8 md:p-14 relative">
                 <AnimatePresence mode="wait">
                   {step === 1 ? (
                     <motion.div
@@ -196,18 +215,18 @@ const Checkout = () => {
                       </div>
 
                       {/* Custom Tabs */}
-                      <div className="flex items-center gap-4 mb-12">
+                      <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 mb-8 sm:mb-12">
                         <button
                           onClick={() => setFormTab("traveler")}
-                          className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold transition-all ${formTab === "traveler" ? "bg-amber-500 text-black shadow-lg shadow-amber-500/20" : "bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10"}`}
+                          className={`flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all ${formTab === "traveler" ? "bg-amber-500 text-black shadow-lg shadow-amber-500/20" : "bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10"}`}
                         >
                           <User size={16} className={formTab === "traveler" ? "text-black" : "text-neutral-500"} />
                           {t("dash.modal.step1")}
                         </button>
-                        <div className="w-8 h-[1px] bg-white/10"></div>
+                        <div className="hidden sm:block w-8 h-[1px] bg-white/10"></div>
                         <button
                           onClick={() => { if (validateTraveler()) setFormTab("trip"); }}
-                          className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold transition-all ${formTab === "trip" ? "bg-amber-500 text-black shadow-lg shadow-amber-500/20" : "bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10"}`}
+                          className={`flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all ${formTab === "trip" ? "bg-amber-500 text-black shadow-lg shadow-amber-500/20" : "bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10"}`}
                         >
                           <Plane size={16} className={formTab === "trip" ? "text-black" : "text-neutral-500"} />
                           {t("dash.modal.step2")}
@@ -215,7 +234,7 @@ const Checkout = () => {
                       </div>
 
                       {/* Form Areas */}
-                      <div className="h-[400px]">
+                      <div className="min-h-[400px]">
                         <AnimatePresence mode="wait">
                           {formTab === "traveler" && (
                             <motion.div
@@ -498,7 +517,7 @@ const Checkout = () => {
                         <p className="text-neutral-400 text-sm">{t("checkout.subtitle")}</p>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {/* Summary Details */}
                         <div className="space-y-6">
                           <div className="p-8 bg-white/[0.03] border border-white/10 rounded-[2rem] space-y-6 relative overflow-hidden group">
@@ -533,15 +552,15 @@ const Checkout = () => {
                             </div>
                           </div>
 
-                          <div className="p-8 bg-amber-500/[0.02] border border-amber-500/10 rounded-[2rem] space-y-5">
-                            <div className="flex justify-between items-center">
+                          <div className="p-6 sm:p-8 bg-amber-500/[0.02] border border-amber-500/10 rounded-[2rem] space-y-5 mt-4">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                               <div className="flex items-center gap-3">
                                 <Wallet className="text-amber-500/40" size={18} />
-                                <span className="text-xs font-black uppercase tracking-widest text-white/40">{t("checkout.total")}</span>
+                                <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-white/40">{t("checkout.total")}</span>
                               </div>
-                              <div className="text-right">
+                              <div className="sm:text-right flex-shrink-0">
                                 <div className="text-[10px] text-white/20 font-black uppercase tracking-widest mb-1">{t("checkout.credits.standard")}</div>
-                                <span className="text-4xl font-black text-white tracking-tighter">${calculateTotal()}</span>
+                                <span className="text-3xl sm:text-4xl font-black text-white tracking-tighter">${calculateTotal()}</span>
                               </div>
                             </div>
                             <div className="pt-4 border-t border-white/5 space-y-2">
@@ -662,7 +681,7 @@ const Checkout = () => {
               </div>
 
               {/* Visual Side Panel */}
-              <div className="relative hidden md:flex flex-col bg-neutral-900 border-l border-white/5 overflow-hidden">
+              <div className="relative hidden lg:flex flex-col bg-neutral-900 border-l border-white/5 overflow-hidden">
                 <div className="absolute inset-0">
                   <AnimatePresence mode="wait">
                     <motion.img
