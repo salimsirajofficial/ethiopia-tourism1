@@ -144,7 +144,7 @@ const Navbar = () => {
   const [langOpen, setLangOpen] = useState(false);
   const lastScrollY = useRef(0);
 
-  const BACKEND_URL = "http://localhost:5000";
+  const BACKEND_URL = "https://ethiopia-tourism.onrender.com";
 
   const handleLogout = () => {
     localStorage.removeItem("token");
